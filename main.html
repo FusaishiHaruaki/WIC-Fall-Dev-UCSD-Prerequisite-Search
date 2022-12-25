@@ -1,72 +1,187 @@
 <html>
 <head>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.1/raphael.js"></script>
-  <script type="text/javascript" src="./dracula/dist/dracula.dev.js"></script>
-  <script type="text/javascript" src="./raphael/raphael.js"></script>
-  <script type="text/javascript" src="https://github.com/dcao/seascape/blob/master/data/prereqs.json"></script>
+  <script type="text/javascript" src="https://github.com/UCSD-course-planner-team/WIC-Fall-Dev-UCSD-Prerequisite-Search/blob/main/prereqs.json"></script>
   <script src="https://unpkg.com/gojs"></script>
 
 </head>
 <body>
-  <!-- <p1> 1111</p1>
-  <div id="paper"></div>
-  <div id="canvas" style="display: block; height: 400px; width: 100%;"></div>
-  <script type="text/javascript" src="script.js"></script>
-  <p1> 222</p1> -->
-  <p1>Hi</p1>
+
+<!--   <p>Enter course code: </p>
+
+  <textarea id="mySavedModel" style="width:20%;height:20px"> CSE 11 </textarea>
+
+  <p id="selected_course"></p> -->
   <div id="myDiagramDiv" style="width:100%; height:100%;"></div>
 
-<script >
-const myDiagram =
-  new go.Diagram("myDiagramDiv",  // create a Diagram for the HTML Div element
-    { "undoManager.isEnabled": true, layout: new go.TreeLayout({ angle: 180, layerSpacing: 35 }) });  // enable undo & redo
+  <script >
+  let target = 'CSE 100';
+  let lis = [];
+  let lis1 = [];
+  async function loadNames(lis, lis1, target) {
+    lis = [];
+    lis1 = [];
+    const myList = document.querySelector('ul');
+    const myRequest = new Request('https://raw.githubusercontent.com/UCSD-course-planner-team/WIC-Fall-Dev-UCSD-Prerequisite-Search/main/prereqs.json');
+    let prooo = {key: target, leftArray: []}
+
+    const response = await fetch(myRequest);
+    const names = await response.json();
+
+    let a = findCourseInJson(target, names);
+    //console.log("functionnew: " + (target, names, lis, lis1));
+    pro(target, names, lis, lis1);
+    console.log('lis: ' + JSON.stringify(lis));
+    console.log('lis1: ' + JSON.stringify(lis1));
+    renderDiagram(lis, lis1);
+  }
+  var listOfCourses = loadNames(lis, lis1, target);
+
+/* given - string for target 
+names, lis, list1 - same as in above function 
+trying recursion*/
+function pro(given, names, lis, lis1){
+  if (!lis.some(k => k.key == given)){
+  let prere = createNode(given, names, lis, lis1).prereqs;
+  //console.log(prere);
+  if (prere.length > 1){
+    for (let i = 0; i < prere.length; i++){
+      for (let j = 0; j < prere[i].length; j++){
+        lis1.push({from: prere[i][j].course, to: given, toPort: "left" + i});
+        pro(prere[i][j].course, names, lis, lis1);
+      }
+    } 
+  } else if (prere.length == 1){
+    for (let i = 0; i < prere[0].length; i++){
+      lis1.push({from: prere[0][i].course, to: given, toPort: "left0"});
+      pro(prere[0][i].course, names, lis, lis1);
+
+    }
+  }}
+} 
+
+function createNode(given, names, lis, lis1){
+  let a = findCourseInJson(given, names);
+  let pree = a.prereqs;
+  let arr = [];
+  for (let i = 0; i< pree.length; i++){
+    arr.push({portId: ("left" + i)});
+  };
+  b = {key: given, leftArray: arr};
+  lis.push(b);
+  return a;
+}
+
+//Check whether target is in lis
+function inList(target, lis){
+  let a = false;
+  a = lis.some(b => b == target)
+  return a;
+}
+
+/*targ - string for target course to be found
+names - json txt*/
+function findCourseInJson(targ, names){
+  for (let i = 0; i < names.length; i++){
+    if (names[i].course === targ) {
+     // console.log("Find result " + JSON.stringify(names[i]));
+      return names[i];
+    }
+  }
+}
 
 
-// define a simple Node template
-myDiagram.nodeTemplate =
-  new go.Node("Auto")  // the Shape will automatically surround the TextBlock
-    // add a Shape and a TextBlock to this "Auto" Panel
-    .add(new go.Shape("RoundedRectangle",
-        { strokeWidth: 1, fill: "white" })  // no border; default fill is white
-        .bind("fill", "color"))  // Shape.fill is bound to Node.data.color
-    .add(new go.TextBlock({ margin: 8, stroke: "#333" })  // some room around the text
-        .bind("text", "key"));  // TextBlock.text is bound to Node.data.key
+//--------------------------------------------
+function renderDiagram(lis, lis1){
+  const $ = go.GraphObject.make;  //for conciseness in defining node templates
 
-// but use the default Link template, by not setting Diagram.linkTemplate
+    const myDiagram =
+      new go.Diagram("myDiagramDiv",  // create a Diagram for the HTML Div element
+        { "undoManager.isEnabled": true, layout: new go.TreeLayout({ angle: 0, layerSpacing: 35 }) });  // enable undo & redo
 
+        myDiagram.nodeTemplate =
+        $(go.Node, "Table", new go.Binding("location", "loc", go.Point.parse),
+           {
+            locationObjectName: "BODY",
+            locationSpot: go.Spot.Center,
+            selectionObjectName: "BODY",
+          }, 
+          new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
 
-// create the model data that will be represented by Nodes and Links
-myDiagram.model = new go.GraphLinksModel(
-  [
-    { key: "Alpha"},
-    { key: "Beta" },
-    { key: "Gamma"},
-    { key: "Delta"}
-  ],
-  [
+          // the body
+          $(go.Panel, "Auto",
+            {
+              row: 1, column: 1, name: "BODY",
+              stretch: go.GraphObject.Fill
+            },
+            $(go.Shape, "Rectangle",
+              {
+                fill: "#dbf6cb", stroke: null, strokeWidth: 0,
+                minSize: new go.Size(60, 60)
+              }),
+            $(go.TextBlock,
+              { margin: 10, textAlign: "center", font: "bold 14px Segoe UI,sans-serif", stroke: "#484848", editable: true },
+              new go.Binding("text", "key").makeTwoWay()
+              )
+          ),  // end Auto Panel body
+
+          // the Panel holding the left port elements, which are themselves Panels,
+          // created for each item in the itemArray, bound to data.leftArray
+          $(go.Panel, "Vertical",
+            new go.Binding("itemArray", "leftArray"),
+            {
+              row: 1, column: 0,
+              itemTemplate:
+                $(go.Panel,
+                  {
+                    _side: "left",  // internal property to make it easier to tell which side it's on
+                    fromSpot: go.Spot.Left, toSpot: go.Spot.Left,
+                  },
+                  new go.Binding("portId", "portId"),
+                  $(go.Shape, "Rectangle",
+                    {
+                      stroke: null, strokeWidth: 0,
+                      desiredSize: new go.Size(4, 8),
+                      margin: new go.Margin(1, 0)
+                    },
+                    new go.Binding("fill", "portColor"))
+                )  // end itemTemplate
+            }
+          ),  // end Vertical Panel
+            
+        );
     
+    /* myDiagram.linkTemplate = new go.Link({ routing: go.Link.AvoidsNodes,corner: 10  })
+      .add(new go.Shape())
+      .add(new go.Shape({ toArrow: "Standard" })); */
 
-    { from: "Alpha", to: "Beta" },
-    { from: "Alpha", to: "Gamma" },
-    { from: "Gamma", to: "Delta" }
-  ]); 
 
-  
-  /* fetch('./prereqs.json')
-  var mydata = JSON.parse(data);
-  console.log(mydata);
-  myDiagram.model = go.Model.fromJson(mydata); */
+      myDiagram.linkTemplate =
+  $(go.Link,
+    { routing: go.Link.AvoidsNodes,
+      corner: 10, 
+      curve: go.Link.JumpGap  },                  // rounded corners
+    $(go.Shape),
+    $(go.Shape, { toArrow: "Standard" })
+  );
 
-/* 
-  myDiagram.model = new go.TreeModel(
-  [ // the nodeDataArray
-    { key: "Alpha" },
-    { key: "B", parent: "Alpha" },
-    { key: "C", parent: "B" } 
-    {key: '0'},
-    
-  ]); */
 
-</script>
+    myDiagram.layout = new go.TreeLayout();    
+    myDiagram.model = new go.GraphLinksModel();
+
+var n = new go.GraphLinksModel();
+n.linkToPortIdProperty = "toPort";
+
+for (let i = 0; i < lis.length; i++){
+  //console.log(lis[i]);
+  n.addNodeData(lis[i]);
+}
+for (let i = 0; i < lis1.length; i++){
+  n.addLinkData(lis1[i]);
+}
+
+myDiagram.model = n;
+
+}
+    </script>
 </body>
 </html>
