@@ -2,15 +2,14 @@
 
 # Instructions: 
 - Download main.html
-- Edit "target" variable to be the desired course
-- Run webpage on browser to see result for prerequisites
+- Run webpage on browser
+- enter course code to see visual representation of prerequisites
 
 # Limitations: 
 - The page can currently only be accessed through the local file
-- No UI on webpage, need to enter course through source code
-- Ugly and confusing layout
-
-
+- Requires wifi to run
+- Ugly layout
+- Requires input with specific regulations
 
 # Sources: 
 Used library: GoJS https://gojs.net/latest/index.html
