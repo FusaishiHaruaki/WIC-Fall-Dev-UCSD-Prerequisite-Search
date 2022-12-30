@@ -6,18 +6,25 @@
 </head>
 <body>
 
-<!--   <p>Enter course code: </p>
+  <p>Enter course code: </p>
 
   <textarea id="mySavedModel" style="width:20%;height:20px"> CSE 11 </textarea>
+  <button onclick="search()">Submit</button> 
 
-  <p id="selected_course"></p> -->
+  <p id="selected_course"></p>
   <div id="myDiagramDiv" style="width:100%; height:100%;"></div>
 
   <script >
+
+function search(){
+  let course = document.getElementById("mySavedModel").value;
+  course = course.trim();
+  var a = loadNames(course);
+}
+
   let target = 'CSE 100';
-  let lis = [];
-  let lis1 = [];
-  async function loadNames(lis, lis1, target) {
+  let init = true;
+  async function loadNames(/* lis, lis1,  */target) {
     lis = [];
     lis1 = [];
     const myList = document.querySelector('ul');
@@ -27,20 +34,26 @@
     const response = await fetch(myRequest);
     const names = await response.json();
 
-    let a = findCourseInJson(target, names);
-    //console.log("functionnew: " + (target, names, lis, lis1));
+    //console.log('lis: ' + JSON.stringify(lis));
+    //console.log('lis1: ' + JSON.stringify(lis1));
+    console.log(target);
     pro(target, names, lis, lis1);
-    console.log('lis: ' + JSON.stringify(lis));
-    console.log('lis1: ' + JSON.stringify(lis1));
-    renderDiagram(lis, lis1);
+    if (init){
+      init = false;
+      renderDiagram(lis, lis1);
+    } else {
+      myDiagram.model.nodeDataArray = lis;
+      myDiagram.model.linkDataArray = lis1;
+    }
   }
-  var listOfCourses = loadNames(lis, lis1, target);
+var listOfCourses = loadNames(/* lis, lis1,  */target);
 
 /* given - string for target 
 names, lis, list1 - same as in above function 
 trying recursion*/
 function pro(given, names, lis, lis1){
   if (!lis.some(k => k.key == given)){
+   // console.log(given);
   let prere = createNode(given, names, lis, lis1).prereqs;
   //console.log(prere);
   if (prere.length > 1){
@@ -60,7 +73,14 @@ function pro(given, names, lis, lis1){
 } 
 
 function createNode(given, names, lis, lis1){
+  //console.log(JSON.stringify(given)  + JSON.stringify(names));
   let a = findCourseInJson(given, names);
+  if (a == undefined){
+    console.log("Invalid input");
+    document.write("<p>Invalid input! Please refresh and make sure that the course code entered is valid. </p><p>Make sure that the letters are capitalized and that there is a space between letters and numbers. e.g. \"CSE 11\" instead of \"cse11.\"</p>");
+    return;
+  }
+  //console.log(a);
   let pree = a.prereqs;
   let arr = [];
   for (let i = 0; i< pree.length; i++){
@@ -94,7 +114,7 @@ function findCourseInJson(targ, names){
 function renderDiagram(lis, lis1){
   const $ = go.GraphObject.make;  //for conciseness in defining node templates
 
-    const myDiagram =
+    myDiagram =
       new go.Diagram("myDiagramDiv",  // create a Diagram for the HTML Div element
         { "undoManager.isEnabled": true, layout: new go.TreeLayout({ angle: 0, layerSpacing: 35 }) });  // enable undo & redo
 
