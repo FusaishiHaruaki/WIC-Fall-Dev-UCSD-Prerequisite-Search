@@ -24,6 +24,7 @@ The below image indicates that MATH 20C and one of MATH 31AH, MATH 20F, MATH 18 
 - Requires wifi to run
 - Ugly layout
 - Requires input with specific regulations
+- Outdated? prerequisite sheet
 
 # Sources: 
 Used library: GoJS https://gojs.net/latest/index.html
