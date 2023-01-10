@@ -8,6 +8,7 @@
 # Limitations: 
 - The page can currently only be accessed through the local file
 - Requires wifi to run
+- Pressing the Enter key causes inaccurate input (need to push submit button)
 - Ugly layout
 - Requires input with specific regulations
 - Outdated? prerequisite sheet
