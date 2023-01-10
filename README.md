@@ -6,6 +6,7 @@
 - enter course code to see visual representation of prerequisites
 
 # Limitations: 
+- Course prerequisite data outdated
 - The page can currently only be accessed through the local file
 - Requires wifi to run
 - Pressing the Enter key causes inaccurate input (fixed)
