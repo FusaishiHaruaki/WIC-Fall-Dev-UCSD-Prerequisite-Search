@@ -8,7 +8,8 @@
 
   <p>Enter course code: </p>
 
-  <textarea id="mySavedModel" style="width:20%;height:20px"> CSE 11 </textarea>
+
+ <textarea id="mySavedModel" style="width:20%;height:20px" onkeypress="space()"> CSE 11 </textarea>
   <button onclick="search()">Submit</button> 
 
   <p id="selected_course"></p>
@@ -16,8 +17,20 @@
 
   <script >
 
+    //check enter key in text area
+    function space(){
+      var key = window.event.keyCode;
+    // If the user has pressed enter
+    if (key === 13) {
+        search();
+        document.getElementById("mySavedModel").value = "";
+    }
+    }
+
 function search(){
   let course = document.getElementById("mySavedModel").value;
+  console.log(course);
+  //course.replace("\n", "");
   course = course.trim();
   var a = loadNames(course);
 }
