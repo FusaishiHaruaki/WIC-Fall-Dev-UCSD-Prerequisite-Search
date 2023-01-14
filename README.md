@@ -1,5 +1,5 @@
 # WIC-Fall-Dev-UCSD-Prerequisite-Search
-Find the site through [this link.] (/main.html) 
+Find the site through [this link.](main.html) 
 
 
 # Instructions: 
