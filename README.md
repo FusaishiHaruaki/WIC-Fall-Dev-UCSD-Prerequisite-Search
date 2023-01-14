@@ -1,4 +1,6 @@
 # WIC-Fall-Dev-UCSD-Prerequisite-Search
+Find the site through [this link.] (main.html) 
+
 
 # Instructions: 
 - Download main.html
