@@ -1,6 +1,7 @@
 # WIC-Fall-Dev-UCSD-Prerequisite-Search
 Find the site through [this link.](main.html) 
-[Repository?](https://github.com/UCSD-course-planner-team/WIC-Fall-Dev-UCSD-Prerequisite-Search/edit/main)
+
+[Repository?](https://github.com/UCSD-course-planner-team/WIC-Fall-Dev-UCSD-Prerequisite-Search)
 
 # Instructions: 
 - Download main.html
