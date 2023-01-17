@@ -2,19 +2,52 @@
 <head>
   <script type="text/javascript" src="https://github.com/UCSD-course-planner-team/WIC-Fall-Dev-UCSD-Prerequisite-Search/blob/main/prereqs.json"></script>
   <script src="https://unpkg.com/gojs"></script>
+  <style>
+    
+    body {
+         margin: 0px;
+      }
+    .column {
+      float: left;
+      width: 25%;
+      height: 100%; /* Should be removed. Only for demonstration */
+    }
+    .column2 {
+      float: right;
+      width: 75%;
+      height: 100%; /* Should be removed. Only for demonstration */
+    }
+    .column3 {
+      margin: 10px;
+    }
+    textarea {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    .buttoncenter {
+      display: flex;
+  justify-content: center;
+  align-items: center;
 
+    }
+    
+    </style>
 </head>
 <body>
-  <p>*Note: this site is only to be used as a reference for prerequisites. For detailed and accurate information, please check out the University course websites. </p>
-  <p>Link to <a href="https://ucsd-course-planner-team.github.io/WIC-Fall-Dev-UCSD-Prerequisite-Search/">Github page</a></p>
-  <p>Enter course code: </p>
+  <div class="column" style="background-color:#80d2ff;">
+    <div class="column3">
+    <h1>UCSD Course Prerequisite search</h1>
+  <p>Enter course code: (Please capilatize letters, and keep a space between letters and course code. e.g. "CSE 11" instead of "cse11") </p>
 
-
- <textarea id="mySavedModel" style="width:20%;height:20px" onkeypress="space()"> CSE 11 </textarea>
-  <button onclick="search()">Submit</button> 
-
+  <textarea id="mySavedModel" style="width:90%;height:20px;text-align:center" onkeypress="space()"> CSE 11 </textarea>
+  <div class="buttoncenter">
+  <button onclick="search()">Submit</button> </div>
+  <p>*Note: this site is only to be used for reference. For detailed and accurate information, please refer to the <a href="https://catalog.ucsd.edu/front/courses.html">UCSD course websites. </a></p>
+    <p><a href="https://github.com/UCSD-course-planner-team/WIC-Fall-Dev-UCSD-Prerequisite-Search">Github page</a></p>
+</div></div>
   <p id="selected_course"></p>
-  <div id="myDiagramDiv" style="width:100%; height:100%;"></div>
+  <div class="column2" id="myDiagramDiv" ></div>
 
   <script >
 
@@ -149,7 +182,7 @@ function renderDiagram(lis, lis1){
             },
             $(go.Shape, "Rectangle",
               {
-                fill: "#dbf6cb", stroke: null, strokeWidth: 0,
+                fill: "#80d2ff", stroke: null, strokeWidth: 0,
                 minSize: new go.Size(60, 60)
               }),
             $(go.TextBlock,
