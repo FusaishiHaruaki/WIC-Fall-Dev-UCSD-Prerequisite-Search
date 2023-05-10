@@ -1,4 +1,6 @@
 # WIC-Fall-Dev-UCSD-Prerequisite-Search
+This is a quarterly project under UCSD WIC. The websites aims to present a graphical representation for course planning conveniences. 
+
 Find the site through [this link.](https://ucsd-course-planner-team.github.io/WIC-Fall-Dev-UCSD-Prerequisite-Search/main.html) 
 
 
@@ -14,7 +16,7 @@ Find the site through [this link.](https://ucsd-course-planner-team.github.io/WI
 - Pressing the Enter key causes inaccurate input (fixed)
 - Ugly layout
 - Requires input with specific regulations
-- Outdated? prerequisite sheet
+- Outdated? Need update on the prerequisite sheet
 
 # Graph keys: 
 - Multiple courses pointing to the same port indicates "or" relation. Only one of the prerequisites need to be fulfilled for the prerequisite. 
